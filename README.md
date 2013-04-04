@@ -4,29 +4,48 @@ node-ssh-protocol
 Nodejs implementation of ssh protocol
 
 Simple Usage
+------------
+
 ```
 var fs = require('fs');
-var ssh_protocol = require('ssh-protocol'),
-	ssh_server = require('net').createServer().listen(22);
+var SSHProtocol = require('ssh-protocol'),
+	SSHServer = require('net').createServer().listen(22);
 
-ssh_protocol.config({ 
-	softwareversion: 'version_0.0',
+var ssh = new SSHProtocol({ 
+	softwareversion: 'version_is_0.0',
 	'ssh-rsa': { 
-		publickey: fs.readFileSync('_t_rsa_b_2048.pub').toString(),
-		privatekey: fs.readFileSync('_t_rsa_b_2048.key').toString() 
+		publickey: fs.readFileSync(...).toString(),
+		privatekey: fs.readFileSync(...).toString() 
 	},
 	'banner': {
-		message: 'banner messages...\r\n'
+		message: 'banner...\r\n'
 	}
 });
 
-ssh_protocol.on('userauth', function (request, response) {
-	response.success('sole_user');
-});
+ssh.on('connection', function (ssh_conn) {
+	ssh_conn.on('userauth', function (request, response) {
+		response.success(request.username);
+	});
 
-ssh_protocol.on('data', function (request, response) {
-	response.stdout(request.data);
+	var initiated = false;
+	ssh_conn.on('data', function (request, response) {
+		if(!initiated) {
+			response.clear();
+			initiated = true;
+		}
+		
+		if(request.data[0] === 0x0d)
+			request.data = new Buffer('\r\n');
+		else
+			response.stdout(request.data);
+	});
 });
-
-ssh_protocol.listen(ssh_server);
+	
+ssh.listen(SSHServer);
 ```
+
+Support Client
+--------------
+* Connection through OpenSSH is possible
+* Connection through PuTTY is not yet supported. I don't understand how PuTTY do calculate kex hash...
+ 
