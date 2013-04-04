@@ -1,0 +1,21 @@
+{
+  "name": "ssh-protocol",
+  "version": "0.0.1",
+  "main": "ssh-protocol.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/newmsz/node-ssh-protocol.git"
+  },
+  "author": "newmsz",
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "1.4.x"
+  },
+  "readmeFilename": "README.md",
+  "gitHead": "4d2fd9c2b0185f6fb1381b71414e50a233a39335",
+  "description": "node-ssh-protocol =================",
+  "devDependencies": {}
+}
