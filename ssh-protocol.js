@@ -1,7 +1,7 @@
 var	_ = require('underscore');
 var SSH = require('./lib/ssh');
 
-var config = { 
+var default_config = { 
 	softwareversion: 'nodesshprotocol_0.0.1', 
 	comments: '',
 	'ssh-rsa': null 
@@ -12,7 +12,7 @@ var self = module.exports;
 _.extend(self, new (require('events').EventEmitter)());
 
 exports.config = function(conf) {
-	config = _.defaults(conf, config);
+	config = _.defaults(conf, default_config);
 	if(config['ssh-rsa']) {
 		if(!config['ssh-rsa'].publickey) throw new Error('no publickey found in "ssh-rsa" configuration');
 		if(!config['ssh-rsa'].privatekey) throw new Error('no privatekey found in "ssh-rsa" configuration');
