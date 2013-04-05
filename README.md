@@ -23,7 +23,7 @@ var ssh = new SSHProtocol({
 });
 
 ssh.on('connection', function (ssh_conn) {
-	ssh_conn.on('userauth', function (request, response) {
+	ssh_conn.on('authentication', function (request, response) {
 		response.success(request.username);
 	});
 
