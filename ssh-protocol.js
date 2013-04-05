@@ -17,6 +17,9 @@ function SSHProtocol (conf) {
 	if(this.config['banner']) {
 		SSH.setBanner(this.config['banner'].message, this.config['banner'].language);
 	}
+	if(this.config['authentication']) {
+		SSH.setAuthenticationMethod(this.config['authentication']);
+	}
 }
 
 module.exports = SSHProtocol;
