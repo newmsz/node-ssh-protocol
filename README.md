@@ -23,21 +23,17 @@ var ssh = new SSHProtocol({
 });
 
 ssh.on('connection', function (ssh_conn) {
-	ssh_conn.on('authentication', function (request, response) {
-		response.success(request.username);
+	ssh_conn.on('terminal', function (request, response) {
+		response.clear();
+		response.stdout('Welcome, ' + this._mdc._user.Email + '!\r\n');
 	});
 
-	var initiated = false;
+	ssh_conn.on('authentication', function (request, response) {
+		response.success();
+	});
+	
 	ssh_conn.on('data', function (request, response) {
-		if(!initiated) {
-			response.clear();
-			initiated = true;
-		}
-		
-		if(request.data[0] === 0x0d)
-			request.data = new Buffer('\r\n');
-		else
-			response.stdout(request.data);
+		response.stdout(request.data);
 	});
 });
 	
